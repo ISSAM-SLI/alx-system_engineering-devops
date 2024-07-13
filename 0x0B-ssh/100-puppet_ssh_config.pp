@@ -1,15 +1,13 @@
-# make changes to config file using Puppet
-
-include stdlib
+# Puppet manifest to configure SSH client
 
 file_line { 'Refuse to authenticate using a password':
   ensure => present,
-  path   => '/etc/ssh/ssh_config',
+  path   => '~/.ssh/config',
   line   => 'PasswordAuthentication no',
 }
 
 file_line { 'Use private key':
   ensure => present,
-  path   => '/etc/ssh/ssh_config',
+  path   => '~/.ssh/config',
   line   => 'IdentityFile ~/.ssh/school'
 }
