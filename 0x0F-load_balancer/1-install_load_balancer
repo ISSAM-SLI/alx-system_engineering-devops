@@ -1,17 +1,29 @@
 #!/usr/bin/env bash
 # load balanecer haproxy install
-apt-get -y update
-apt-get -y upgrade
+
+# Install and configure HAproxy on my lb-01 server.
+sudo apt-get -y update
 apt-get -y install haproxy
-sed -i 's/ENABLED=0/ENABLED=1/' /etc/default/haproxy
-cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxyORIGINAL.cfg
-cat >> /etc/haproxy/haproxy.cfg << EOF
-    listen webapp 0.0.0.0:80
-    mode http
-    balance roundrobin
-    option httpclose
-    option forwardfor
-    server 1026-web-01 3.236.116.4:80 check
-    server 1026-web-02 3.238.201.120:80 check
-EOF
-service haproxy restart
+
+# we need to edit the config file
+server_config=\
+"
+frontend http
+        bind *:80
+        mode http
+        default_backend web-backend
+backend web-backend
+        balance roundrobin
+        server web-01 web-01.issam.tech:80 check
+        server web-02 web-02.issam.tech:80 check
+"
+echo "$server_config" | sudo tee -a /etc/haproxy/haproxy.cfg
+
+# we need to enable  haproxy to be started script
+echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
+
+# Testing the HAproxy configuration file
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Restart the Nginx service
+sudo service haproxy restart
