@@ -7,7 +7,7 @@ sudo apt-get install -y nginx
 
 # Creating an index.html page
 echo "Hello World!" | sudo tee /var/www/html/index.html
-string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/besthor permanent;"
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/ISSAM-SLI permanent;"
 
 sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
 
