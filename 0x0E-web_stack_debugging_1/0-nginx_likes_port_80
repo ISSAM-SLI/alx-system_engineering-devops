@@ -1,3 +1,6 @@
 #!/usr/bin/env bash
-# we try to run commands as another user
-sudo -u "$1" -- whoami
+# Nginx must be running, and listening on port 80
+apt install -y nginx
+rm /etc/nginx/sites-enabled/default
+ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
+service nginx start
