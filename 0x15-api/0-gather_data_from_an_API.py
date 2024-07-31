@@ -1,7 +1,8 @@
 #!/usr/bin/python3
+""" importing the necessary modules """
 
-import sys
 import requests
+import sys
 
 
 def display_todo():
