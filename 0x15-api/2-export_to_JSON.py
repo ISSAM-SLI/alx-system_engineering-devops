@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 """ importing the necessary modules """
 
+import json
 import requests
 import sys
-import json
 
 
 def export_to_json():
