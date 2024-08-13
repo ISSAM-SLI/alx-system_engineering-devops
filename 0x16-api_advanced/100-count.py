@@ -9,18 +9,20 @@ from collections import defaultdict
 
 
 def count_words(subreddit, word_list, after=None, word_count=None):
-    '''Function that recursively queries Reddit and counts keyword occurrences.'''
+    '''Function that recursively queries
+    Reddit and counts keyword occurrences.'''
     if word_count is None:
         word_count = defaultdict(int)
 
     headers = {'User-Agent': 'test'}
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?after={after}" if after else f"https://www.reddit.com/r/{subreddit}/hot.json"
-    
+    base_url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    url = f"{base_url}?after={after}" if after else base_url
+
     try:
         res = requests.get(url, headers=headers, allow_redirects=False)
         if res.status_code != 200:
             return None
-        
+
         data = res.json().get('data', {})
         posts = data.get('children', [])
         after = data.get('after', None)
@@ -35,7 +37,7 @@ def count_words(subreddit, word_list, after=None, word_count=None):
 
         if after:
             count_words(subreddit, word_list, after, word_count)
-        
+
         return word_count
 
     except requests.exceptions.RequestException:
@@ -48,8 +50,11 @@ def print_count(subreddit, word_list):
     counts = count_words(subreddit, word_list)
     if counts is None:
         return
-    
-    sorted_counts = sorted(counts.items(), key=lambda x: (-x[1], x[0]))
+
+    sorted_counts = sorted(
+        counts.items(),
+        key=lambda x: (-x[1], x[0])
+    )
 
     for word, count in sorted_counts:
         if count > 0:
