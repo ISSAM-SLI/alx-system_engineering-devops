@@ -12,10 +12,16 @@ def number_of_subscribers(subreddit):
        Returns 0 if the subreddit is invalid or an error occurs.
     '''
     headers = {'User-Agent': 'test'}
-    res = requests.get("https://www.reddit.com/r/{}/about.json"
-                       .format(subreddit), headers=headers)
+    url = f"https://www.reddit.com/r/{subreddit}/about.json"
     try:
-        subs = res.json()['data']['subscribers']
-    except Exception:
+        res = requests.get(url, headers=headers, allow_redirects=False)
+
+        if res.status_code == 200:
+            data = res.json()
+            subs = data.get('data', {}).get('subscribers', 0)
+        else:
+            subs = 0
+    except requests.exceptions.RequestException:
         return 0
+
     return subs
