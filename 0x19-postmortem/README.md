@@ -6,8 +6,6 @@ On July 8, 2024, the load balancer (`lb-01`) was down from 3 PM UTC+1 to 6 PM UT
 
 The root cause of the outage was a misconfiguration in the load balancer’s routing rules, which disrupted the distribution of traffic between the servers.
 
-![Load Balancer Outage Diagram](load_balancer_outage_picture.png)
-
 ## Timeline
 
 - **3:00 PM UTC+1**: Monitoring alert triggered, indicating an issue with traffic distribution from `lb-01`.
